@@ -1,5 +1,4 @@
 import ShardedMapView from 'shardedmapview';
-import TestPatternTileUrl from './TestPatternTileUrl';
 
 var scrollScreenCount = 5;
 var spacer = document.querySelector('.spacer');
@@ -64,7 +63,6 @@ const createShardLayer = shard => {
         };
         const globalTileCoord = shard.localTileCoordToGlobalTileCoord(localTileCoord);
         // console.info({localTileCoord, globalTileCoord});
-        // return TestPatternTileUrl(globalTileCoord);
         return `tiles/${globalTileCoord.z}/${globalTileCoord.y}/${globalTileCoord.x}.jpg`;
       },
       // url: 'tiles/{z}/{y}/{x}.jpg',

@@ -13,8 +13,13 @@ const urlForGlobalTileCoord = globalTileCoord => (
   `tiles/${globalTileCoord.z}/${globalTileCoord.y}/${globalTileCoord.x}.jpg`
 );
 
-import preload from "./preload.json";
-window.preload = preload;
+// import preload from "./preload.json";
+// window.preload = preload;
+
+let preload = {};
+System.import('./preload.json').then(_preload => {
+  preload = _preload;
+});
 
 
 // var projection = new ol.proj.Projection({

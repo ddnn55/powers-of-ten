@@ -4,9 +4,18 @@ var scrollScreenCount = 5;
 var spacer = document.querySelector('.spacer');
 spacer.style.height = `${scrollScreenCount*100}vh`;
 var maxZoom = 70;
-var minZoom = -70;
+// var minZoom = -70;
+var minZoom = 2;
 // var center = {x: 176, y: 48};
 var center = {"x":"128.0016141500943428448072593252413229423969638627691528974582234357628736503442433126402991383946653653658571601445669123154923965573998471437018910682341037293499355108706628977960574481437612486658","y":"128.00195132018363418487352763163562855601469064111825050735847960634477794103218654962983385885214726693906899946292441207098880544632960588659986178493271958960278199345308309633137493641369036839327"};
+
+const urlForGlobalTileCoord = globalTileCoord => (
+  `tiles/${globalTileCoord.z}/${globalTileCoord.y}/${globalTileCoord.x}.jpg`
+);
+
+import preload from "./preload.json";
+window.preload = preload;
+
 
 // var projection = new ol.proj.Projection({
 //     code: 'MYPROJECTION',
@@ -63,11 +72,27 @@ const createShardLayer = shard => {
         };
         const globalTileCoord = shard.localTileCoordToGlobalTileCoord(localTileCoord);
         // console.info({localTileCoord, globalTileCoord});
-        return `tiles/${globalTileCoord.z}/${globalTileCoord.y}/${globalTileCoord.x}.jpg`;
+        const tile = ShardedMapView.Tile({
+          zoom: globalTileCoord.z,
+          row: globalTileCoord.y,
+          column: globalTileCoord.x
+        });
+        if(tile.key() in preload) {
+          console.info(`${tile.key()} is in preload. using data URL`);
+          return preload[tile.key()];
+        }
+        else {
+          const url = urlForGlobalTileCoord(globalTileCoord);
+          // console.log(`${tile.key()} is NOT in preload. loading from remote ${url}`);
+          return url;
+        }
+        
       },
       // url: 'tiles/{z}/{y}/{x}.jpg',
       tilePixelRatio: 1,
-      tileSize: [256, 256],
+      // tileSize: [256, 256],
+      tileSize: [512, 512],
+      // tileSize: [1024, 1024],
       minZoom: minZoom,
       maxZoom: maxZoom,
       wrapX: false
@@ -119,7 +144,7 @@ function getScrollProgress() {
 
 function doSomething(scroll_percent) {
   const newZoom = minZoom + scroll_percent * (maxZoom - minZoom);
-  console.info('requested zoom: ' + newZoom);
+  // console.info('requested zoom: ' + newZoom);
   globalView.setView({
     zoom: newZoom,
     center: center

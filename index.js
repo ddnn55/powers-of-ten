@@ -1,3 +1,6 @@
+import superagent from 'superagent';
+import {gunzip} from 'zlib';
+
 import ShardedMapView from 'shardedmapview';
 
 var scrollScreenCount = 5;
@@ -16,9 +19,27 @@ const urlForGlobalTileCoord = globalTileCoord => (
 // import preload from "./preload.json";
 // window.preload = preload;
 
+
 let preload = {};
+// let preload = require('preload.zoom-0.json');
+
+// superagent.get('preload.json.gz').end((err, res) => {
+//   console.log(res);
+//   gunzip(res.text, (err, unzipped) => {
+//     if (err) {
+//       console.error(err);
+//     } else {
+//       console.info(unzipped);
+//       preload = JSON.parse(unzipped);
+//       console.info('unzipped preload');
+//     }
+//   });
+// });
+
+
 System.import('./preload.json').then(_preload => {
-  preload = _preload;
+  Object.assign(preload, _preload);
+  console.log(`preloaded ${Object.keys(preload).length} tiles`);
 });
 
 
@@ -87,10 +108,13 @@ const createShardLayer = shard => {
           return preload[tile.key()];
         }
         else {
-          const url = urlForGlobalTileCoord(globalTileCoord);
-          // console.log(`${tile.key()} is NOT in preload. loading from remote ${url}`);
-          return url;
+          return 'gray_test_tile.png';
         }
+        // else {
+        //   const url = urlForGlobalTileCoord(globalTileCoord);
+        //   // console.log(`${tile.key()} is NOT in preload. loading from remote ${url}`);
+        //   return url;
+        // }
         
       },
       // url: 'tiles/{z}/{y}/{x}.jpg',

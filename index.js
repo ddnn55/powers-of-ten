@@ -20,8 +20,11 @@ const urlForGlobalTileCoord = globalTileCoord => (
 // window.preload = preload;
 
 
-let preload = {};
-// let preload = require('preload.zoom-0.json');
+// let preload = {};
+let preload = Object.assign(
+  require('./preload/zoom-1.json'),
+  require('./preload/zoom-2.json')
+);
 
 // superagent.get('preload.json.gz').end((err, res) => {
 //   console.log(res);
@@ -37,8 +40,9 @@ let preload = {};
 // });
 
 
-System.import('./preload.json').then(_preload => {
-  Object.assign(preload, _preload);
+superagent.get('preload/all.json').end((err, res) => {
+  console.log({res});
+  Object.assign(preload, res.body);
   console.log(`preloaded ${Object.keys(preload).length} tiles`);
 });
 
@@ -107,14 +111,14 @@ const createShardLayer = shard => {
           console.info(`${tile.key()} is in preload. using data URL`);
           return preload[tile.key()];
         }
-        else {
-          return 'gray_test_tile.png';
-        }
         // else {
-        //   const url = urlForGlobalTileCoord(globalTileCoord);
-        //   // console.log(`${tile.key()} is NOT in preload. loading from remote ${url}`);
-        //   return url;
+        //   return 'gray_test_tile.png';
         // }
+        else {
+          const url = urlForGlobalTileCoord(globalTileCoord);
+          // console.log(`${tile.key()} is NOT in preload. loading from remote ${url}`);
+          return url;
+        }
         
       },
       // url: 'tiles/{z}/{y}/{x}.jpg',

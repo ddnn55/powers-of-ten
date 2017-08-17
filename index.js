@@ -26,6 +26,8 @@ let preload = Object.assign(
   require('./preload/zoom-2.json')
 );
 
+/**** was not yet able to gunzip, but hopefully we
+      can count on a gzip'ing webserver....  ****/
 // superagent.get('preload.json.gz').end((err, res) => {
 //   console.log(res);
 //   gunzip(res.text, (err, unzipped) => {
@@ -43,7 +45,7 @@ let preload = Object.assign(
 superagent.get('preload/all.json').end((err, res) => {
   console.log({res});
   Object.assign(preload, res.body);
-  console.log(`preloaded ${Object.keys(preload).length} tiles`);
+  console.log(`preloaded ${Object.keys(res.body).length} tiles`);
 });
 
 

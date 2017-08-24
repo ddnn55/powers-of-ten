@@ -103,7 +103,7 @@ const createShardLayer = shard => {
           x: tileCoord[1]
         };
         const globalTileCoord = shard.localTileCoordToGlobalTileCoord(localTileCoord);
-        // console.info({localTileCoord, globalTileCoord});
+        console.info({localTileCoord, globalTileCoord});
         const tile = ShardedMapView.Tile({
           zoom: globalTileCoord.z,
           row: globalTileCoord.y,
@@ -117,6 +117,7 @@ const createShardLayer = shard => {
         //   return 'gray_test_tile.png';
         // }
         else {
+          console.info(tile.key());
           const url = urlForGlobalTileCoord(globalTileCoord);
           // console.log(`${tile.key()} is NOT in preload. loading from remote ${url}`);
           return url;

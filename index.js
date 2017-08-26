@@ -24,11 +24,11 @@ let preload = {};
 // );
 
 
-superagent.get('preload/all.json').end((err, res) => {
-  console.log({res});
-  Object.assign(preload, res.body);
-  console.log(`preloaded ${Object.keys(res.body).length} tiles`);
-});
+// superagent.get('preload/all.json').end((err, res) => {
+//   console.log({res});
+//   Object.assign(preload, res.body);
+//   console.log(`preloaded ${Object.keys(res.body).length} tiles`);
+// });
 
 
 window.olView = new ol.View({
@@ -140,7 +140,7 @@ var globalView = ShardedMapView({
   setActiveShardView: view => {
     olView.setZoom(view.zoom);
     olView.setCenter([view.center.x, view.center.y]);
-    console.info('set local view', view);
+    // console.info('set local view', view);
   }
 });
 
@@ -152,6 +152,12 @@ var mapEl = document.querySelector('.map');
 function getScrollProgress() {
     return Math.abs(spacer.getBoundingClientRect().top / (scrollScreenCount * mapEl.getBoundingClientRect().height * (scrollScreenCount-1)/scrollScreenCount));
 }
+
+
+document.querySelector('.scroller').addEventListener('click', e => {
+  console.log(globalView.zoom());
+});
+
 
 const replaceHash = value => {
   const url = window.location.href.substring(0, window.location.href.indexOf('#'));
@@ -170,11 +176,11 @@ const getHash = () => {
 const ease = 0;
 let zoomTarget;
 const doEase = () => {
+  globalView.setView({
+    zoom: zoomTarget * (1-ease) + globalView.zoom() * ease,
+    center: center
+  });
   if(Math.abs(zoomTarget - globalView.zoom()) > 0.01) {
-    globalView.setView({
-      zoom: zoomTarget * (1-ease) + globalView.zoom() * ease,
-      center: center
-    });
     requestAnimationFrame(doEase);
   }
 };
@@ -182,7 +188,7 @@ const doEase = () => {
 function doSomething(scroll_percent) {
   zoomTarget = minZoom + scroll_percent * (maxZoom - minZoom);
   doEase();
-  replaceHash(zoomTarget);
+  // replaceHash(zoomTarget);
 }
 
 document.querySelector('.scroller').addEventListener('scroll', function(e) {

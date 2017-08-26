@@ -7,8 +7,8 @@ var scrollScreenCount = 5;
 var spacer = document.querySelector('.spacer');
 spacer.style.height = `${scrollScreenCount*100}vh`;
 var maxZoom = 70;
-// var minZoom = -70;
-var minZoom = 2;
+var minZoom = -70;
+// var minZoom = 2;
 // var center = {x: 176, y: 48};
 var center = {"x":"128.0016141500943428448072593252413229423969638627691528974582234357628736503442433126402991383946653653658571601445669123154923965573998471437018910682341037293499355108706628977960574481437612486658","y":"128.00195132018363418487352763163562855601469064111825050735847960634477794103218654962983385885214726693906899946292441207098880544632960588659986178493271958960278199345308309633137493641369036839327"};
 
@@ -178,6 +178,11 @@ function getScrollProgress() {
     return Math.abs(spacer.getBoundingClientRect().top / (scrollScreenCount * mapEl.getBoundingClientRect().height * (scrollScreenCount-1)/scrollScreenCount));
 }
 
+const replaceHash = value => {
+  const url = window.location.href.substring(0, window.location.href.indexOf('#'));
+  history.replaceState(null, '', `${url}#${value}`);
+};
+
 function doSomething(scroll_percent) {
   const newZoom = minZoom + scroll_percent * (maxZoom - minZoom);
   // console.info('requested zoom: ' + newZoom);
@@ -186,6 +191,7 @@ function doSomething(scroll_percent) {
     // zoom: 24.12125,
     center: center
   });
+  replaceHash(newZoom);
 }
 
 document.querySelector('.scroller').addEventListener('scroll', function(e) {

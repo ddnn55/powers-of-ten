@@ -103,21 +103,21 @@ const createShardLayer = shard => {
           x: tileCoord[1]
         };
         const globalTileCoord = shard.localTileCoordToGlobalTileCoord(localTileCoord);
-        console.info({localTileCoord, globalTileCoord});
+        // console.info({globalTileCoord});
         const tile = ShardedMapView.Tile({
           zoom: globalTileCoord.z,
           row: globalTileCoord.y,
           column: globalTileCoord.x
         });
         if(tile.key() in preload) {
-          console.info(`${tile.key()} is in preload. using data URL`);
+          // console.info(`${tile.key()} is in preload. using data URL`);
           return preload[tile.key()];
         }
         // else {
         //   return 'gray_test_tile.png';
         // }
         else {
-          console.info(tile.key());
+          // console.info(tile.key());
           const url = urlForGlobalTileCoord(globalTileCoord);
           // console.log(`${tile.key()} is NOT in preload. loading from remote ${url}`);
           return url;
@@ -165,7 +165,7 @@ var globalView = ShardedMapView({
   setActiveShardView: view => {
     olView.setZoom(view.zoom);
     olView.setCenter([view.center.x, view.center.y]);
-    // console.info('local view', view);
+    console.info('set local view', view);
   }
 });
 
@@ -183,6 +183,7 @@ function doSomething(scroll_percent) {
   // console.info('requested zoom: ' + newZoom);
   globalView.setView({
     zoom: newZoom,
+    // zoom: 24.12125,
     center: center
   });
 }

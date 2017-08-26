@@ -3,43 +3,25 @@ import {gunzip} from 'zlib';
 
 import ShardedMapView from 'shardedmapview';
 
-var scrollScreenCount = 5;
+var scrollScreenCount = 10;
 var spacer = document.querySelector('.spacer');
 spacer.style.height = `${scrollScreenCount*100}vh`;
 var maxZoom = 70;
-var minZoom = -70;
+var minZoom = -60;
 // var minZoom = 2;
 // var center = {x: 176, y: 48};
 var center = {"x":"128.0016141500943428448072593252413229423969638627691528974582234357628736503442433126402991383946653653658571601445669123154923965573998471437018910682341037293499355108706628977960574481437612486658","y":"128.00195132018363418487352763163562855601469064111825050735847960634477794103218654962983385885214726693906899946292441207098880544632960588659986178493271958960278199345308309633137493641369036839327"};
 
 const urlForGlobalTileCoord = globalTileCoord => (
-  `tiles/${globalTileCoord.z}/${globalTileCoord.y}/${globalTileCoord.x}.jpg`
+  `tiles/${globalTileCoord.z}/${globalTileCoord.y}/${globalTileCoord.x}.png`
 );
 
-// import preload from "./preload.json";
-// window.preload = preload;
 
-
-// let preload = {};
-let preload = Object.assign(
-  require('./preload/zoom-1.json'),
-  require('./preload/zoom-2.json')
-);
-
-/**** was not yet able to gunzip, but hopefully we
-      can count on a gzip'ing webserver....  ****/
-// superagent.get('preload.json.gz').end((err, res) => {
-//   console.log(res);
-//   gunzip(res.text, (err, unzipped) => {
-//     if (err) {
-//       console.error(err);
-//     } else {
-//       console.info(unzipped);
-//       preload = JSON.parse(unzipped);
-//       console.info('unzipped preload');
-//     }
-//   });
-// });
+let preload = {};
+// let preload = Object.assign(
+//   require('./preload/zoom-1.json'),
+//   require('./preload/zoom-2.json')
+// );
 
 
 superagent.get('preload/all.json').end((err, res) => {
@@ -49,17 +31,10 @@ superagent.get('preload/all.json').end((err, res) => {
 });
 
 
-// var projection = new ol.proj.Projection({
-//     code: 'MYPROJECTION',
-//     units: 'pixels',
-//     extent: [0, 0, 256, 256]
-// });
 window.olView = new ol.View({
-  // center: center,
   zoom: minZoom,
   minZoom: 0,
-  maxZoom: 32,
-  // extent: center.concat(center)
+  maxZoom: 32
 });
 window.map = new ol.Map({
   renderer: 'canvas',
@@ -182,16 +157,32 @@ const replaceHash = value => {
   const url = window.location.href.substring(0, window.location.href.indexOf('#'));
   history.replaceState(null, '', `${url}#${value}`);
 };
+const getHash = () => {
+  const hashIndex = window.location.href.indexOf('#');
+  if(hashIndex > -1) {
+    return window.location.href.substring(hashIndex+1);
+  }
+  else {
+    return null;
+  }
+};
+
+const ease = 0;
+let zoomTarget;
+const doEase = () => {
+  if(Math.abs(zoomTarget - globalView.zoom()) > 0.01) {
+    globalView.setView({
+      zoom: zoomTarget * (1-ease) + globalView.zoom() * ease,
+      center: center
+    });
+    requestAnimationFrame(doEase);
+  }
+};
 
 function doSomething(scroll_percent) {
-  const newZoom = minZoom + scroll_percent * (maxZoom - minZoom);
-  // console.info('requested zoom: ' + newZoom);
-  globalView.setView({
-    zoom: newZoom,
-    // zoom: 24.12125,
-    center: center
-  });
-  replaceHash(newZoom);
+  zoomTarget = minZoom + scroll_percent * (maxZoom - minZoom);
+  doEase();
+  replaceHash(zoomTarget);
 }
 
 document.querySelector('.scroller').addEventListener('scroll', function(e) {
@@ -204,3 +195,10 @@ document.querySelector('.scroller').addEventListener('scroll', function(e) {
   }
   ticking = true;
 });
+
+// if(getHash().length) {
+//   globalView.setView({
+//     zoom: +getHash(),
+//     center: center
+//   });
+// }

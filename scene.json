@@ -852,7 +852,7 @@
     }
   },
   {
-    "imageUrl": "galaxy.gif",
+    "imageUrl": "galaxy.png",
     "imageAspect": 1.3333333333333333,
     "upperLeft": {
       "x": "-459367161456097144.09947462107136",
@@ -864,7 +864,7 @@
     }
   },
   {
-    "imageUrl": "satell.gif",
+    "imageUrl": "satell.png",
     "imageAspect": 1.3333333333333333,
     "upperLeft": {
       "x": "-4782822807934679473.8534588612608",
@@ -876,7 +876,7 @@
     }
   },
   {
-    "imageUrl": "localgrp.gif",
+    "imageUrl": "localgrp.png",
     "imageAspect": 1.3333333333333333,
     "upperLeft": {
       "x": "-49431509508908807972.52563337478144",
@@ -888,7 +888,7 @@
     }
   },
   {
-    "imageUrl": "virgocls.gif",
+    "imageUrl": "virgocls.png",
     "imageAspect": 1.3333333333333333,
     "upperLeft": {
       "x": "-820880111278563889637.48171353161728",

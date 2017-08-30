@@ -816,7 +816,7 @@
     }
   },
   {
-    "imageUrl": "12lys.gif",
+    "imageUrl": "12lys.png",
     "imageAspect": 1.3333333333333333,
     "upperLeft": {
       "x": "-144036023238656",
@@ -828,7 +828,7 @@
     }
   },
   {
-    "imageUrl": "250lys.gif",
+    "imageUrl": "250lys.png",
     "imageAspect": 1.0666666666666667,
     "upperLeft": {
       "x": "-2251799813685248",
@@ -840,7 +840,7 @@
     }
   },
   {
-    "imageUrl": "5000lys.gif",
+    "imageUrl": "5000lys.png",
     "imageAspect": 1.3333333333333333,
     "upperLeft": {
       "x": "-42784196460019712",

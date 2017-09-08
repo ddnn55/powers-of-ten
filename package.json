@@ -10,6 +10,7 @@
     "babel-preset-latest": "^6.24.1",
     "gzip-loader": "^0.0.1",
     "ol": "^4.3.1",
+    "shardedmapview": "git+https://github.com/gimlids/shardedmapview",
     "superagent": "^3.5.2",
     "webpack": "^3.2.0",
     "webpack-dev-server": "^2.5.1"

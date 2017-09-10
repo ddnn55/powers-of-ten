@@ -732,6 +732,18 @@
     }
   },
   {
+    "imageUrl": "Screen Shot 2017-09-10 at 1.13.58 PM.png",
+    "imageAspect": 1.6,
+    "upperLeft": {
+      "x": "-15892479.99999463129088",
+      "y": "9797632.00000536870912"
+    },
+    "lowerRight": {
+      "x": "15826944.00000536870912",
+      "y": "-9764864"
+    }
+  },
+  {
     "imageUrl": "vlcsnap-2017-08-11-08h47m33s424.png",
     "imageAspect": 0.9929742388758782,
     "upperLeft": {
